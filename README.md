@@ -30,13 +30,13 @@ The project showcases:
 |  +------------------------------+                  |
 |  |        Prometheus            |                  |
 |  +------------------------------+                  |
-|                | scrape                              |
-|                v                                     |
-|       +----------------+                             |
-|       |    Grafana     | <---- Custom Dashboard ---- |
-|       +----------------+                             |
+|                | scrape                            |
+|                v                                   |
+|       +----------------+                           |
+|       |    Grafana     | <---- Custom Dashboard ---|---------
+|       +----------------+                           |
 |                                                    |
-| Ingress -> /users /posts /grafana                   |
+| Ingress -> /users /posts /grafana                  |
 +----------------------------------------------------+
 ```
 
