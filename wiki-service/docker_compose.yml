@@ -1,0 +1,71 @@
+services:
+  fastapi:
+    build: .
+    image: fastapi:latest
+    container_name: fastapi
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: admin
+      DB_HOST: wiki-service-postgres
+      DB_PORT: "5432"
+      DB_NAME: wiki_db
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - wiki-service-network
+
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: wiki-service-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: wiki_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - wiki-service-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: wiki-service-prometheus
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - wiki-service-network
+    depends_on:
+      fastapi :
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  prometheus_data:
+
+networks:
+  wiki-service-network:
+    driver: bridge

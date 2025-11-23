@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "wiki-chart.fullname" . }}-fastapi
+  labels:
+    app: {{ include "wiki-chart.name" . }}
+    component: fastapi
+spec:
+  replicas: {{ .Values.fastapi.replicas }}
+  selector:
+    matchLabels:
+      app: {{ include "wiki-chart.name" . }}
+      component: fastapi
+  template:
+    metadata:
+      labels:
+        app: {{ include "wiki-chart.name" . }}
+        component: fastapi
+    spec:
+      containers:
+        - name: fastapi
+          image: "{{ .Values.fastapi.image_name }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DB_USER
+              value: {{ .Values.postgres.username }}
+            - name: DB_PASSWORD
+              value: {{ .Values.postgres.password }}
+            - name: DB_HOST
+              value: "{{ include "wiki-chart.fullname" . }}-postgres"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: {{ .Values.postgres.db }}
+          resources:
+{{ toYaml .Values.fastapi.resources | indent 12 }}
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
