@@ -171,7 +171,7 @@ Includes:
 * Auto‑refresh visualization
 
 ```
-<img width="1897" height="955" alt="image" src="https://github.com/user-attachments/assets/030d06f2-08dc-4add-94f8-fea8bb726a4c" />
+![image](https://github.com/user-attachments/assets/030d06f2-08dc-4add-94f8-fea8bb726a4c)
 
 ```
 
