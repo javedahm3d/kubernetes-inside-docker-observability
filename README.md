@@ -171,9 +171,10 @@ Includes:
 * Auto‑refresh visualization
 
 ```
-![image](https://github.com/user-attachments/assets/030d06f2-08dc-4add-94f8-fea8bb726a4c)
+
 
 ```
+<img width="1897" height="955" alt="grafana-dashboard" src="https://github.com/user-attachments/assets/67f42bfa-42ae-42ed-a5b7-917b26cb558e" />
 
 ---
 
